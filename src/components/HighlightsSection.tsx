@@ -66,7 +66,7 @@ Now, I try to give some tips and tricks to newcomers at hackathons whenever I ca
   },
   {
     id: 3,
-    media: "/placeholder6.jpeg",
+    media: "/placeholder6.jpg",
     title: "The Goated Trio",
     description:
       "Our research on smart commuting with geospatial risk analysis was accepted in multiple conferences and properly defended in MLMI 2025, soon to be published.",
