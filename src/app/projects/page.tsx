@@ -1,22 +1,13 @@
 "use client";
-import React, { useState, useRef } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useTransform,
-} from "framer-motion";
-import Image from "next/image";
-import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
-import {
-  HoverEffect,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card-hover-effect";
-import { ScrollBackgroundText } from "@/components/ui/scroll-background-text";
+
+import React, { useState } from "react";
 import Link from "next/link";
-import { Project } from "@/types";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaGithub, FaExternalLinkAlt, FaArrowLeft } from "react-icons/fa";
 import { PROJECTS } from "@/data/projects";
+import { Project } from "@/types";
+import { ScrollBackgroundText } from "@/components/ui/scroll-background-text";
 
 const ProjectMedia = ({
   project,
@@ -63,95 +54,72 @@ const ProjectMedia = ({
   );
 };
 
-const ProjectCardMediaWrapper = ({ project }: { project: Project }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-
-  // Scale the media slightly up to avoid clipping, and translate it vertically as we scroll
-  const y = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
-
-  return (
-    <div
-      ref={ref}
-      className="w-full h-48 sm:h-56 relative rounded-lg overflow-hidden bg-neutral-900 border border-neutral-800 mb-4 group flex-shrink-0"
-    >
-      <motion.div
-        className="absolute inset-0 w-full h-full scale-110 will-change-transform"
-        style={{
-          y,
-          transform: "translateZ(0)",
-        }}
-      >
-        <ProjectMedia project={project} />
-      </motion.div>
-      <div className="absolute inset-0 z-10 bg-black/20 group-hover:bg-transparent transition-colors duration-500 pointer-events-none" />
-    </div>
-  );
-};
-
-export function ProjectsSection() {
+export default function ProjectsPage() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const hoverItems = PROJECTS.slice(0, 4).map((project) => ({
-    id: project.id,
-    onClick: () => setSelectedProject(project),
-    children: (
-      <>
-        <ProjectCardMediaWrapper project={project} />
-        <CardTitle>{project.title}</CardTitle>
-        <CardDescription>{project.description}</CardDescription>
-        <div className="flex flex-wrap gap-2 mt-4">
-          {project.tech.map((tech, i) => (
-            <span
-              key={i}
-              className="text-xs font-mono px-2 py-1 bg-neutral-800 text-neutral-300 rounded-md border border-neutral-700"
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
-      </>
-    ),
-  }));
-
   return (
-    <div className="w-full py-12 flex flex-col items-center relative">
-      <ScrollBackgroundText text="PROJECTS" direction="right" speed={20} />
-      <div className="max-w-7xl mx-auto px-4 w-full relative z-10 flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
-        <div className="lg:w-1/3 sticky top-32 z-20 pb-4 lg:pb-0">
-          <h2 className="text-3xl md:text-5xl font-bold text-neutral-100 tracking-tight text-left">
-            Projects
-          </h2>
-          <div className="w-12 h-px bg-neutral-700 mt-6 mb-6 hidden lg:block" />
-          <p className="text-neutral-400 font-serif text-sm md:text-base leading-relaxed hidden lg:block max-w-sm">
-            A selection of my technical work, demonstrating problem-solving,
-            architectural design, and full-stack engineering across various
-            domains.
+    <main className="min-h-screen bg-[#0a0a0a] text-neutral-200 relative overflow-hidden py-24">
+      <ScrollBackgroundText text="ARCHIVE" direction="right" speed={15} />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="mb-16">
+          <Link
+            href="/"
+            className="inline-flex items-center text-sm font-mono text-neutral-400 hover:text-white transition-colors mb-8 group"
+          >
+            <FaArrowLeft className="mr-2 group-hover:-translate-x-1 transition-transform" />
+            RETURN TO BASE
+          </Link>
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-4">
+            Project Archives
+          </h1>
+          <p className="text-neutral-400 max-w-2xl font-serif text-lg">
+            A complete log of all technical transmissions, experiments, and
+            deployed systems.
           </p>
         </div>
-        <div className="lg:w-2/3 w-full">
-          <HoverEffect
-            items={hoverItems}
-            className="w-full mx-auto py-0 lg:grid-cols-2"
-          />
-          <div className="mt-4 flex justify-end px-4 lg:px-8">
-            <Link
-              href="/projects"
-              className="text-sm font-mono text-neutral-400 hover:text-white transition-colors uppercase tracking-wider flex items-center gap-2 group"
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {PROJECTS.map((project) => (
+            <div
+              key={project.id}
+              onClick={() => setSelectedProject(project)}
+              className="group relative flex flex-col justify-between p-4 rounded-xl border border-neutral-800 bg-neutral-900/50 hover:bg-neutral-900 transition-colors cursor-pointer overflow-hidden h-[400px]"
             >
-              View All Projects{" "}
-              <span className="group-hover:translate-x-1 transition-transform">
-                -&gt;
-              </span>
-            </Link>
-          </div>
+              <div className="absolute inset-0 z-0 h-1/2">
+                <ProjectMedia project={project} />
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 to-transparent" />
+              </div>
+
+              <div className="relative z-10 mt-auto pt-48">
+                <h3 className="text-xl font-bold text-white mb-2">
+                  {project.title}
+                </h3>
+                <p className="text-neutral-400 text-sm line-clamp-3 mb-4">
+                  {project.description}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {project.tech.slice(0, 3).map((tech, i) => (
+                    <span
+                      key={i}
+                      className="text-xs font-mono px-2 py-1 bg-black/50 text-neutral-300 rounded border border-neutral-800"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                  {project.tech.length > 3 && (
+                    <span className="text-xs font-mono px-2 py-1 text-neutral-500">
+                      +{project.tech.length - 3}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* DaisyUI Modal for Monochromatic Neo-Analog aesthetic */}
+      {/* Reused Modal from ProjectsSection */}
       <AnimatePresence>
         {selectedProject && (
           <div
@@ -242,6 +210,6 @@ export function ProjectsSection() {
           </div>
         )}
       </AnimatePresence>
-    </div>
+    </main>
   );
 }

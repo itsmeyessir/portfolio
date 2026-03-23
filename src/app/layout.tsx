@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { RefreshRateProvider } from "@/components/RefreshRateContext";
+import { SmoothScrolling } from "@/components/SmoothScrolling";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,7 +16,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "itsmeyessir | My Portfolio",
-  description: "Robbie's Portfolio - Showcasing my work and skills as a developer.",
+  description:
+    "Robbie's Portfolio - Showcasing my work and skills as a developer.",
 };
 
 export default function RootLayout({
@@ -28,9 +30,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <RefreshRateProvider>
-          {children}
-        </RefreshRateProvider>
+        <SmoothScrolling>
+          <RefreshRateProvider>{children}</RefreshRateProvider>
+        </SmoothScrolling>
       </body>
     </html>
   );
