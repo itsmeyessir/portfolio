@@ -1,0 +1,57 @@
+---
+title: "v1.0 — AI-Powered Scam Detection"
+version: "1.0"
+project: "scamfie"
+projectTitle: "Scamfie"
+date: "2025-11-30"
+type: "release"
+tags: ["scam-detection", "chrome-extension", "llm", "e-commerce"]
+excerpt: "A Chrome extension that analyzes Facebook Marketplace and Carousell listings in real time using a forensic LLM engine to detect scams."
+---
+
+## Overview
+
+Scamfie is a Chrome extension that brings AI-powered scam detection to Philippine e-commerce. It analyzes Facebook Marketplace and Carousell listings in real time and returns a forensic risk verdict: SAFE, CAUTION, HIGH RISK, or CRITICAL.
+
+## How It Works
+
+### Data Extraction
+The extension injects a script into the active tab that scrapes listing and seller data: item title, price, description, photo count, seller join date, active listings, followers, and ratings.
+
+For **Carousell**, it goes deeper — fetching the seller's profile page and parsing `__NEXT_DATA__` JSON (React SSR state) to extract verified statistics not visible in the DOM.
+
+### Forensic LLM Engine
+The structured data is sent to a local Express server, which forwards it to **Groq's API** using `llama-3.1-8b-instant` with `temperature: 0` for deterministic output. The system prompt encodes a strict rule hierarchy:
+
+- **Power Seller Override**: High ratings and followers → SAFE
+- **Garage Sale Defense**: Many active listings → SAFE
+- **Hacked Account Trap**: Old dormant account with one high-value item → HIGH RISK
+- **Too Good To Be True**: Price below 60% of market value → HIGH RISK
+- **Lazy Scammer Signal**: High-value item with single photo → HIGH RISK
+
+### UI
+The extension renders a four-segment animated progress bar, verdict header (green/yellow/orange/red), prediction card, market price verification with Google search link, and recommended action steps.
+
+## Installation
+
+```bash
+git clone https://github.com/itsmeyessir/Scamfie.git
+cd Scamfie/server
+cp .env.example .env
+# Add your GROQ_API_KEY
+npm install
+node server.js
+```
+
+Load the `extension/` directory as an unpacked extension in Chrome.
+
+## Technical Challenges
+
+The hardest problem was **Carousell scraping without an API**. The solution parses `__NEXT_DATA__` JSON embedded in the HTML, regex-matching for seller statistics with fallbacks to DOMParser and meta tags.
+
+## What's Next
+
+- Server-side JSON schema validation
+- Unit and end-to-end tests
+- Caching layer and rate limiter for LLM calls
+- Privacy consent prompts in the extension

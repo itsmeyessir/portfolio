@@ -8,10 +8,16 @@ import { ContactSection } from "@/components/ContactSection";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { HighlightsSection } from "@/components/HighlightsSection";
+import { BlogSection } from "@/components/BlogSection";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ParallaxWrapper } from "@/components/ParallaxWrapper";
+import { PostMeta } from "@/lib/mdx";
 
-export default function Home() {
+interface HomeClientProps {
+  posts: PostMeta[];
+}
+
+export default function Home({ posts }: HomeClientProps) {
   return (
     <ToastProvider>
       <ErrorBoundary>
@@ -19,7 +25,6 @@ export default function Home() {
           <Navbar />
         </div>
         <main className="min-h-screen w-full text-neutral-100 flex flex-col items-center justify-center px-0 sm:px-2 md:px-4 pt-12 xs:pt-14 sm:pt-16 md:pt-20 lg:pt-24 relative z-10">
-          {/* Each section is stacked, full viewport height, and centered */}
           <ParallaxWrapper id="about" yOffset={[60, -60]}>
             <AboutSection />
           </ParallaxWrapper>
@@ -30,6 +35,10 @@ export default function Home() {
 
           <ParallaxWrapper id="projects" yOffset={[60, -60]}>
             <ProjectsSection />
+          </ParallaxWrapper>
+
+          <ParallaxWrapper id="updates" yOffset={[60, -60]}>
+            <BlogSection posts={posts} />
           </ParallaxWrapper>
 
           <ParallaxWrapper id="contact" yOffset={[40, -40]}>

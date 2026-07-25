@@ -8,10 +8,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRefreshRateContext } from "@/components/RefreshRateContext";
 import { useToast } from "@/components/ToastContext";
 
+
+
 const navLinks = [
   { name: "About", href: "/#about" },
   { name: "Highlights", href: "/#highlights" },
   { name: "Projects", href: "/#projects" },
+  { name: "Updates", href: "/#updates" },
   { name: "Contact", href: "/#contact" },
 ];
 
@@ -20,6 +23,7 @@ export function Navbar() {
     "about",
     "highlights",
     "projects",
+    "updates",
     "contact",
   ]);
   // const [resumeOpen, setResumeOpen] = useState(false); // Commented out
@@ -28,6 +32,7 @@ export function Navbar() {
   // Get toast context
   const { hideTimer } = useToast();
 
+  // Terminal prank state
   // Sidebar navigation state
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -82,9 +87,9 @@ export function Navbar() {
         {/* Left side - Logo/Profile */}
         <div className="flex items-center gap-2 sm:gap-3">
           <Link
-            href="/blog"
+            href="/terminal"
             className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-full border-2 border-neutral-700 hover:border-white transition-colors bg-neutral-900 overflow-hidden flex-shrink-0 cursor-pointer relative"
-            aria-label="View Blog"
+            aria-label="Home"
             style={{ background: "none", padding: 0 }}
           >
             <Image
@@ -147,15 +152,14 @@ export function Navbar() {
                           );
                         }
 
-                        // Use a more native scrolling approach for better performance
-                        // Adjust navbar height for different screen sizes
-                        const navbarHeight = window.innerWidth < 640 ? 50 : 70;
+                        const elementRect =
+                          targetElement.getBoundingClientRect();
                         const targetPosition =
-                          targetElement.getBoundingClientRect().top +
-                          window.scrollY -
-                          navbarHeight;
+                          window.scrollY +
+                          elementRect.top -
+                          window.innerHeight / 2 +
+                          elementRect.height / 2;
 
-                        // Use window.scrollTo with smooth behavior
                         window.scrollTo({
                           top: targetPosition,
                           behavior: "smooth",
@@ -332,19 +336,18 @@ export function Navbar() {
                                   }),
                                 );
 
-                                // Calculate scroll position with adjustment for navbar height
-                                const navbarHeight =
-                                  window.innerWidth < 640 ? 50 : 70;
-                                const targetPosition =
-                                  targetElement.getBoundingClientRect().top +
-                                  window.scrollY -
-                                  navbarHeight;
+                                const elementRect =
+                                targetElement.getBoundingClientRect();
+                              const targetPosition =
+                                window.scrollY +
+                                elementRect.top -
+                                window.innerHeight / 2 +
+                                elementRect.height / 2;
 
-                                // Smooth scroll to the target
-                                window.scrollTo({
-                                  top: targetPosition,
-                                  behavior: "smooth",
-                                });
+                              window.scrollTo({
+                                top: targetPosition,
+                                behavior: "smooth",
+                              });
                               }, 300);
                             }
                           } else {

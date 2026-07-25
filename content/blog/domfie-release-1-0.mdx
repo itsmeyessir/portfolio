@@ -1,0 +1,54 @@
+---
+title: "v1.0 — The Self-Healing DOM Scraper"
+version: "1.0"
+project: "domfie"
+projectTitle: "Domfie"
+date: "2025-12-07"
+type: "release"
+tags: ["web-scraping", "llm", "rag", "automation"]
+excerpt: "An autonomous web scraper that repairs its own broken CSS selectors using a fine-tuned Qwen2.5-Coder model and DOM-aware RAG pipeline."
+---
+
+## Overview
+
+Domfie solves the "Brittle Scraper" problem — when a website changes its HTML structure, traditional scrapers break silently. Domfie detects failures and autonomously generates new selectors using a specialized LLM, all running locally on consumer hardware.
+
+## Architecture
+
+The system uses a three-tier "Self-Healing Agent Loop":
+
+### Fast Path
+Returns cached selectors instantly when the DOM structure hasn't changed.
+
+### Healing Path
+When a selector breaks, a RAG pipeline vectorizes raw HTML chunks via LlamaIndex using `BAAI/bge-small` embeddings. Only the relevant DOM context is fed to the fine-tuned Qwen2.5-Coder-1.5B model, which generates a new CSS selector.
+
+### Fallback Path
+If the generated selector also fails, the LLM extracts the target text directly from the raw HTML.
+
+## Key Technical Decisions
+
+### HTML-Aware RAG
+Standard RAG pipelines strip HTML to Markdown, which destroys CSS class names and structural tags. Domfie indexes **raw HTML chunks**, preserving `<span class="price">` so the model can generate accurate selectors.
+
+### Fine-Tuning
+Qwen2.5-Coder-1.5B-Instruct was fine-tuned using QLoRA 4-bit via Unsloth on a single T4 GPU. Training dataset of ~610 synthetic pairs across 4 website architectures (static grids, data tables, AJAX content, nested divs). Training loss dropped from 1.89 to 0.29.
+
+### Consumer Hardware Deployment
+The ~3GB FP16 model was quantized to a ~1GB Q4_K_M GGUF binary via `llama.cpp`, serving locally via Ollama with an 8K context window on a MacBook.
+
+## Deployment
+
+```bash
+git clone https://github.com/itsmeyessir/Domfie.git
+cd Domfie
+pip install -r requirements.txt
+ollama create dom_specialist -f Modelfile
+streamlit run app.py
+```
+
+## What's Next
+
+- Additional website architecture archetypes for the training dataset
+- Integration with headless browser farms for large-scale scraping
+- Automatic model fine-tuning from real-world selector failures

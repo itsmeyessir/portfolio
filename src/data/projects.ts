@@ -49,4 +49,52 @@ This project was acknowledged at multiple academic conferences, especially in th
     },
     objectPosition: "center center",
   },
+  {
+    id: 3,
+    media: "/project-domfie.mp4",
+    mediaType: "video",
+    title: "Domfie",
+    description:
+      "An autonomous web scraper that heals its own broken CSS selectors using a fine-tuned multimodal LLM and DOM-aware RAG.",
+    details: `Domfie solves the classic "Brittle Scraper" problem — when a website changes its HTML structure (renames a CSS class, restructures the DOM), traditional scrapers break silently. Domfie detects this and autonomously generates new selectors using a specialized LLM.
+
+The system implements a full end-to-end pipeline. First, a synthetic training dataset of ~610 pairs was harvested across 4 distinct website architectures — static grids, data tables, AJAX-loaded content, and complex nested divs. The specialized model Qwen2.5-Coder-1.5B-Instruct was fine-tuned using QLoRA 4-bit quantization via Unsloth on a single T4 GPU, achieving a training loss drop from 1.89 to 0.29.
+
+The architecture uses a three-tier extraction strategy I call the "Self-Healing Agent Loop." The Fast Path checks a cached selector and returns data instantly. If the selector is broken, the Healing Path kicks in — a RAG pipeline vectorizes raw HTML chunks using BAAI/bge-small embeddings via LlamaIndex, then feeds only the relevant DOM context to the fine-tuned model to generate a new CSS selector. If that also fails, the Fallback Path extracts text directly via the LLM.
+
+A critical design insight was indexing raw HTML chunks instead of stripped Markdown — standard RAG pipelines strip HTML tags, which destroys the structural cues the model needs to generate accurate selectors. This HTML-aware approach proved essential.
+
+For deployment, the ~3GB FP16 model was compressed into a ~1GB Q4_K_M GGUF binary via llama.cpp, capable of running locally on a MacBook via Ollama with an 8K context window. A Streamlit UI provides the interface, and the system automatically switches from lightweight requests to undetected-chromedriver with stealth mode when it detects anti-bot sites like StockX, Nike, or Shopify.
+
+The project is fully documented across 7 engineering phases, from data engineering through deployment. It is MIT-licensed and serves as a proof of concept for autonomous, self-healing web scraping on consumer hardware.`,
+    tech: ["Python", "Qwen2.5-Coder", "Unsloth", "LlamaIndex", "Ollama", "Crawl4AI", "Streamlit"],
+    links: {
+      github: "https://github.com/itsmeyessir/Domfie",
+    },
+    objectPosition: "center top",
+  },
+  {
+    id: 4,
+    media: "/project-scamfie.mp4",
+    mediaType: "video",
+    title: "Scamfie",
+    description:
+      "AI-powered scam detection for Facebook Marketplace and Carousell — a Chrome extension that analyzes listings in real time and delivers a forensic risk verdict.",
+    details: `Scamfie is a Chrome extension that brings AI-powered scam detection to Philippine e-commerce. When a user visits a Facebook Marketplace or Carousell listing and clicks "Analyze Page," the extension scrapes rich listing and seller data, sends it to a local Express backend, and returns a forensic risk verdict: SAFE, CAUTION, HIGH RISK, or CRITICAL.
+
+The extension injects a script into the active tab that extracts item title, price, description, photo count, seller join date, active listing count, follower count, and rating count. For Carousell, it goes further by fetching the seller's profile page and parsing the embedded __NEXT_DATA__ JSON — the React SSR state — to extract verified seller statistics that aren't visible in the DOM.
+
+The backend forwards the structured data to Groq's API using llama-3.1-8b-instant with temperature 0 for deterministic output. The system prompt encodes a strict forensic rule hierarchy: Power Seller Override (high ratings/followers = SAFE), Garage Sale Defense (many active listings = SAFE), Hacked Account Trap (old dormant account + one high-value item = HIGH RISK), Too Good To Be True (price < 60% of market value = HIGH RISK), and Lazy Scammer Signal (high-value item with one photo = HIGH RISK).
+
+The extension UI renders a four-segment animated progress bar with the verdict mapped to fixed visual scores, a prediction card, market price verification with Google search link, recommended action steps, and key findings. Post-processing sanity checks on the server override any AI age misclassifications.
+
+The most technically challenging aspect was Carousell scraping without an API. Since Carousell doesn't expose a public API, the scraper parses __NEXT_DATA__ JSON embedded in the HTML and regex-matches for listingCount, followersCount, reviewCount, and dateJoined, with fallbacks to DOMParser and meta tags.
+
+Scamfie is v1.0.0 MVP status, GPLv3 licensed, and designed with a local-only architecture to keep API keys on the user's machine.`,
+    tech: ["JavaScript", "Chrome Extensions (MV3)", "Node.js", "Express", "Groq API", "LLM"],
+    links: {
+      github: "https://github.com/itsmeyessir/Scamfie",
+    },
+    objectPosition: "center center",
+  },
 ];

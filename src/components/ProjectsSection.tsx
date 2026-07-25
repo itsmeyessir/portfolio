@@ -1,13 +1,12 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import {
   motion,
-  AnimatePresence,
   useScroll,
   useTransform,
 } from "framer-motion";
 import Image from "next/image";
-import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 import {
   HoverEffect,
   CardTitle,
@@ -93,11 +92,11 @@ const ProjectCardMediaWrapper = ({ project }: { project: Project }) => {
 };
 
 export function ProjectsSection() {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const router = useRouter();
 
   const hoverItems = PROJECTS.slice(0, 4).map((project) => ({
     id: project.id,
-    onClick: () => setSelectedProject(project),
+    onClick: () => router.push(`/projects/${project.id}`),
     children: (
       <>
         <ProjectCardMediaWrapper project={project} />
@@ -118,7 +117,7 @@ export function ProjectsSection() {
   }));
 
   return (
-    <div className="w-full py-12 flex flex-col items-center relative">
+    <div className="w-full py-16 sm:py-20 md:py-24 lg:py-28 flex flex-col items-center relative">
       <ScrollBackgroundText text="PROJECTS" direction="right" speed={20} />
       <div className="max-w-7xl mx-auto px-4 w-full relative z-10 flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
         <div className="lg:w-1/3 sticky top-32 z-20 pb-4 lg:pb-0">
@@ -150,98 +149,6 @@ export function ProjectsSection() {
           </div>
         </div>
       </div>
-
-      {/* DaisyUI Modal for Monochromatic Neo-Analog aesthetic */}
-      <AnimatePresence>
-        {selectedProject && (
-          <div
-            className="modal modal-open modal-bottom sm:modal-middle z-[9999]"
-            onClick={() => setSelectedProject(null)}
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.95 }}
-              transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-              className="modal-box bg-[#0a0a0a] border border-neutral-800 text-neutral-200 p-0 overflow-y-auto overflow-x-hidden shadow-2xl shadow-black max-w-3xl relative z-10"
-              data-lenis-prevent="true"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="relative w-full h-48 sm:h-64 border-b border-neutral-800">
-                <ProjectMedia project={selectedProject} isModal={true} />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
-              </div>
-
-              <div className="p-6 sm:p-8">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-                  <h3 className="font-bold text-2xl sm:text-3xl text-white">
-                    {selectedProject.title}
-                  </h3>
-                  <div className="flex gap-3">
-                    {selectedProject.links.github && (
-                      <a
-                        href={selectedProject.links.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 rounded-full bg-neutral-800 hover:bg-white hover:text-black transition-colors border border-neutral-700 hover:border-white"
-                        aria-label="GitHub Repository"
-                      >
-                        <FaGithub size={18} />
-                      </a>
-                    )}
-                    {selectedProject.links.live && (
-                      <a
-                        href={selectedProject.links.live}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 rounded-full bg-neutral-800 hover:bg-white hover:text-black transition-colors border border-neutral-700 hover:border-white"
-                        aria-label="Live Demo"
-                      >
-                        <FaExternalLinkAlt size={16} />
-                      </a>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {selectedProject.tech.map((tech, i) => (
-                    <span
-                      key={i}
-                      className="text-xs font-mono px-2 py-1 bg-neutral-900 text-neutral-400 rounded-md border border-neutral-800"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="prose prose-invert max-w-none">
-                  <p className="whitespace-pre-wrap text-neutral-400 text-sm sm:text-base leading-relaxed font-serif">
-                    {selectedProject.details}
-                  </p>
-                </div>
-              </div>
-
-              <div className="modal-action p-6 pt-0 mt-0">
-                <button
-                  className="btn bg-transparent border border-neutral-600 text-neutral-300 hover:bg-white hover:text-black hover:border-white transition-colors duration-300 rounded-none uppercase tracking-wider text-xs font-bold"
-                  onClick={() => setSelectedProject(null)}
-                >
-                  Close
-                </button>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="modal-backdrop bg-black/90 backdrop-blur-sm"
-            >
-              <button className="cursor-default">close</button>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

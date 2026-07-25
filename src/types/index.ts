@@ -24,3 +24,17 @@ export type Highlight = {
   objectFit?: "cover" | "contain";
   className?: string;
 };
+
+export type ChangelogType = "feature" | "fix" | "breaking" | "improvement";
+
+export type ChangelogMeta = {
+  slug: string;
+  project: string;
+  projectTitle: string;
+  version: string;
+  date: string;
+  type: ChangelogType;
+  title: string;
+  description?: string;
+  tags?: string[];
+};

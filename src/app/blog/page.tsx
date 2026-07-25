@@ -6,9 +6,9 @@ import { ScrollBackgroundText } from "@/components/ui/scroll-background-text";
 import BlogList from "./BlogList";
 
 export const metadata = {
-  title: "Blog | Archives",
+  title: "Updates Archives",
   description:
-    "Technical logs, architectural deep dives, and analytical findings.",
+    "Project release notes and technical documentation.",
 };
 
 export default function BlogPage() {
@@ -16,7 +16,7 @@ export default function BlogPage() {
 
   return (
     <main className="min-h-screen bg-[#0a0a0a] text-neutral-200 relative overflow-hidden py-24">
-      <ScrollBackgroundText text="BLOG" direction="left" speed={15} />
+      <ScrollBackgroundText text="UPDATES" direction="left" speed={15} />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="mb-16">
@@ -28,10 +28,10 @@ export default function BlogPage() {
             RETURN TO BASE
           </Link>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-4">
-            Blog
+            Updates Archives
           </h1>
           <p className="text-neutral-400 font-serif text-lg">
-            Technical logs, architectural deep dives, and analytical findings.
+            A log of all releases and technical documentation across projects.
           </p>
         </div>
 

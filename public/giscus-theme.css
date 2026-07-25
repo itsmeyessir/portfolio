@@ -1,0 +1,73 @@
+/*! MIT License - giscus custom theme matching blog content palette */
+main {
+  --color-prettylights-syntax-comment: #737373;
+  --color-prettylights-syntax-constant: #d4d4d4;
+  --color-prettylights-syntax-entity: #d4d4d4;
+  --color-prettylights-syntax-storage-modifier-import: #d4d4d4;
+  --color-prettylights-syntax-entity-tag: #d4d4d4;
+  --color-prettylights-syntax-keyword: #d4d4d4;
+  --color-prettylights-syntax-string: #d4d4d4;
+  --color-prettylights-syntax-variable: #d4d4d4;
+  --color-prettylights-syntax-brackethighlighter-unmatched: #d4d4d4;
+  --color-prettylights-syntax-invalid-illegal-text: #e5e5e5;
+  --color-prettylights-syntax-invalid-illegal-bg: #171717;
+  --color-prettylights-syntax-carriage-return-text: #e5e5e5;
+  --color-prettylights-syntax-carriage-return-bg: #171717;
+  --color-prettylights-syntax-string-regexp: #d4d4d4;
+  --color-prettylights-syntax-markup-list: #d4d4d4;
+  --color-prettylights-syntax-markup-heading: #d4d4d4;
+  --color-prettylights-syntax-markup-italic: #d4d4d4;
+  --color-prettylights-syntax-markup-bold: #d4d4d4;
+  --color-prettylights-syntax-markup-deleted-text: #e5e5e5;
+  --color-prettylights-syntax-markup-deleted-bg: #171717;
+  --color-prettylights-syntax-markup-inserted-text: #d4d4d4;
+  --color-prettylights-syntax-markup-inserted-bg: #171717;
+  --color-prettylights-syntax-markup-changed-text: #d4d4d4;
+  --color-prettylights-syntax-markup-changed-bg: #171717;
+  --color-prettylights-syntax-markup-ignored-text: #0a0a0a;
+  --color-prettylights-syntax-markup-ignored-bg: #d4d4d4;
+  --color-prettylights-syntax-meta-diff-range: #d4d4d4;
+  --color-prettylights-syntax-brackethighlighter-angle: #737373;
+  --color-prettylights-syntax-sublimelinter-gutter-mark: #404040;
+  --color-prettylights-syntax-constant-other-reference-link: #d4d4d4;
+  --color-btn-text: #a3a3a3;
+  --color-btn-hover-text: #e5e5e5;
+  --color-btn-bg: #0a0a0a;
+  --color-btn-hover-bg: #171717;
+  --color-btn-border: #404040;
+  --color-btn-hover-border: #e5e5e5;
+  --color-btn-active-bg: #171717;
+  --color-btn-selected-bg: #171717;
+  --color-btn-primary-text: #0a0a0a;
+  --color-btn-primary-bg: #e5e5e5;
+  --color-btn-primary-hover-bg: #d4d4d4;
+  --color-btn-primary-hover-border: #e5e5e5;
+  --color-fg-default: #d4d4d4;
+  --color-fg-muted: #a3a3a3;
+  --color-fg-subtle: #737373;
+  --color-canvas-default: transparent;
+  --color-canvas-overlay: #0a0a0a;
+  --color-canvas-inset: transparent;
+  --color-canvas-subtle: #0a0a0a;
+  --color-border-default: #262626;
+  --color-border-muted: #262626;
+  --color-neutral-muted: #262626;
+  --color-accent-fg: #e5e5e5;
+  --color-accent-emphasis: #e5e5e5;
+  --color-accent-subtle: #171717;
+  --color-success-fg: #a3a3a3;
+  --color-attention-fg: #a3a3a3;
+  --color-attention-subtle: #171717;
+  --color-danger-fg: #a3a3a3;
+  --color-danger-subtle: #171717;
+  --color-primer-shadow-inset: none;
+  --color-primer-shadow-focus: 0 0 0 2px #404040;
+  --color-scale-gray-7: #171717;
+  --color-scale-gray-8: #0a0a0a;
+  --color-scale-blue-8: #0a0a0a;
+  color-scheme: dark;
+}
+
+.giscus-reactions {
+  justify-content: flex-start !important;
+}

@@ -6,6 +6,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { FaArrowLeft, FaCalendarAlt, FaClock } from "react-icons/fa";
 import { getPostBySlug, getPostSlugs } from "@/lib/mdx";
 import { MdxComponents } from "@/components/MdxComponents";
+import { Giscus } from "@/components/Giscus";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -28,10 +29,17 @@ export async function generateMetadata({ params }: Props) {
     };
   } catch {
     return {
-      title: "Blog Not Found",
+      title: "Updates Not Found",
     };
   }
 }
+
+const typeColors: Record<string, string> = {
+  feature: "text-blue-400 border-blue-500/30 bg-blue-500/5",
+  improvement: "text-emerald-400 border-emerald-500/30 bg-emerald-500/5",
+  fix: "text-amber-400 border-amber-500/30 bg-amber-500/5",
+  breaking: "text-red-400 border-red-500/30 bg-red-500/5",
+};
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
@@ -57,6 +65,25 @@ export default async function BlogPostPage({ params }: Props) {
         </Link>
 
         <header className="mb-12">
+          {meta.type === "release" && (
+            <div className="flex flex-wrap items-center gap-3 mb-4">
+              <span className={`text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded-full border ${typeColors.feature}`}>
+                {meta.version ? `v${meta.version}` : "RELEASE"}
+              </span>
+              {meta.projectTitle && (
+                <span className="text-xs font-mono text-neutral-500">
+                  {meta.projectTitle}
+                </span>
+              )}
+            </div>
+          )}
+
+          {meta.type === "article" && (
+            <span className="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded-full border text-neutral-500 border-neutral-700 bg-neutral-800/50 mb-4 inline-block">
+              ARTICLE
+            </span>
+          )}
+
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6 leading-tight">
             {meta.title}
           </h1>
@@ -124,10 +151,11 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         )}
 
-        {/* MDX Content gets injected here, mapped via our MdxComponents styling */}
         <div className="prose prose-invert max-w-none prose-neutral">
           <MDXRemote source={content} components={MdxComponents} />
         </div>
+
+        <Giscus />
       </article>
     </main>
   );

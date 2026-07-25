@@ -1,18 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import { FaArrowLeft } from "react-icons/fa";
 import { HIGHLIGHTS } from "@/data/highlights";
-import { Highlight } from "@/types";
 import { ScrollBackgroundText } from "@/components/ui/scroll-background-text";
+import { useRouter } from "next/navigation";
 
 export default function HighlightsPage() {
-  const [selectedHighlight, setSelectedHighlight] = useState<Highlight | null>(
-    null,
-  );
+  const router = useRouter();
 
   return (
     <main className="min-h-screen bg-[#0a0a0a] text-neutral-200 relative overflow-hidden py-24">
@@ -40,10 +37,10 @@ export default function HighlightsPage() {
           {HIGHLIGHTS.map((item) => (
             <div
               key={item.id}
-              onClick={() => setSelectedHighlight(item)}
+              onClick={() => router.push(`/highlights/${item.id}`)}
               className="group relative flex flex-col justify-between p-4 rounded-xl border border-neutral-800 bg-neutral-900/50 hover:bg-neutral-900 transition-colors cursor-pointer overflow-hidden h-[400px]"
             >
-              <div className="absolute inset-0 z-0 h-2/3">
+              <div className="absolute inset-0 z-0">
                 <Image
                   src={item.media}
                   alt={item.title}
@@ -54,7 +51,7 @@ export default function HighlightsPage() {
                     objectFit: item.objectFit || "cover",
                   }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/60 to-transparent" />
               </div>
 
               <div className="relative z-10 mt-auto pt-48">
@@ -69,69 +66,6 @@ export default function HighlightsPage() {
           ))}
         </div>
       </div>
-
-      {/* DaisyUI Modal for Monochromatic Neo-Analog aesthetic */}
-      <AnimatePresence>
-        {selectedHighlight && (
-          <div
-            className="modal modal-open modal-bottom sm:modal-middle z-[9999]"
-            onClick={() => setSelectedHighlight(null)}
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.95 }}
-              transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-              className="modal-box bg-[#0a0a0a] border border-neutral-800 text-neutral-200 p-0 overflow-y-auto overflow-x-hidden shadow-2xl shadow-black max-w-3xl relative z-10"
-              data-lenis-prevent="true"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="relative w-full h-48 sm:h-64 border-b border-neutral-800">
-                <Image
-                  src={selectedHighlight.media}
-                  alt={selectedHighlight.title}
-                  fill
-                  className="object-cover grayscale"
-                  style={{
-                    objectPosition: selectedHighlight.objectPosition,
-                    objectFit: selectedHighlight.objectFit || "cover",
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
-              </div>
-
-              <div className="p-6 sm:p-8">
-                <h3 className="font-bold text-2xl sm:text-3xl mb-4 text-white">
-                  {selectedHighlight.title}
-                </h3>
-                <div className="prose prose-invert max-w-none">
-                  <p className="whitespace-pre-wrap text-neutral-400 text-sm sm:text-base leading-relaxed font-serif">
-                    {selectedHighlight.story}
-                  </p>
-                </div>
-              </div>
-
-              <div className="modal-action p-6 pt-0 mt-0">
-                <button
-                  className="btn bg-transparent border border-neutral-600 text-neutral-300 hover:bg-white hover:text-black hover:border-white transition-colors duration-300 rounded-none uppercase tracking-wider text-xs font-bold"
-                  onClick={() => setSelectedHighlight(null)}
-                >
-                  Close
-                </button>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="modal-backdrop bg-black/90 backdrop-blur-sm"
-            >
-              <button className="cursor-default">close</button>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </main>
   );
 }

@@ -71,8 +71,7 @@ export function ContactSection() {
 
   return (
     <motion.section
-      id="contact"
-      className="scroll-mt-60 w-full max-w-3xl mx-auto py-16 sm:py-20 md:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center min-h-[60vh] bg-transparent"
+      className="w-full max-w-3xl mx-auto py-16 sm:py-20 md:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center min-h-[60vh] bg-transparent"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.5 }}
@@ -89,7 +88,7 @@ export function ContactSection() {
       }}
     >
       <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight text-neutral-100">
-        Initiate Contact
+        Contact
       </h2>
 
       <div className="w-16 h-px bg-neutral-700 mb-8" />
@@ -103,7 +102,7 @@ export function ContactSection() {
         onClick={detectAndOpenEmail}
         className="px-8 py-3.5 bg-transparent border border-neutral-600 text-neutral-300 hover:bg-white hover:text-black hover:border-white transition-all duration-300 font-mono text-sm tracking-widest uppercase rounded-none focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 focus:ring-offset-black"
       >
-        Transmit Message
+        Send Message
       </button>
     </motion.section>
   );
